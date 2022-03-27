@@ -1,0 +1,55 @@
+// For format details, see https://aka.ms/devcontainer.json. For config options, see the README at:
+// https://github.com/microsoft/vscode-dev-containers/tree/v0.224.2/containers/ubuntu
+{
+	"name": "Ubuntu",
+	"build": {
+		"dockerfile": "Dockerfile",
+        "context": "..", 
+		// Update 'VARIANT' to pick an Ubuntu version: hirsute, focal, bionic
+		// Use hirsute or bionic on local arm64/Apple Silicon.
+		"args": { "VARIANT": "bionic" }
+	},
+
+	"runArgs": [
+		"--name","ws_turtlebot2",
+		// Bind resources needed for X11 display to work properly.
+		"-v", "/tmp/.X11-unix:/tmp/.X11-unix:rw",
+		// "-v", "/dev/bus/usb:/dev/bus/usb",
+		"-v", "/etc/udev/:/etc/udev/",
+		// "-v", "/dev/kobuki:/dev/kobuki",
+		"-e", "DISPLAY",
+		// Specify nvidia GPU options: seperate argument from its value
+		"--gpus", "all",
+		"--ipc", "host",
+		// "--device", "/dev/kobuki",
+		"-v", "/dev:/dev",
+		"--net", "host",
+		"--privileged"
+		// "--device", "/dev/ttyUSB0"
+	],
+
+	// Set *default* container specific settings.json values on container create.
+	"settings": { 
+		"python.defaultInterpreterPath": "/usr/bin/python",
+	},
+
+	// Add the IDs of extensions you want installed when the container is created.
+	"extensions": [
+		"ms-vscode.cpptools",
+		"twxs.cmake",
+		"ms-python.python",
+		"ms-python.vscode-pylance",
+		"github.copilot",
+		// "tabnine.tabnine-vscode",
+		"visualstudioexptteam.vscodeintellicode"
+	],
+
+	// Use 'forwardPorts' to make a list of ports inside the container available locally.
+	// "forwardPorts": [],
+
+	// Use 'postCreateCommand' to run commands after the container is created.
+	"postCreateCommand": "bash .devcontainer/post_create_commands.sh",
+
+	// Comment out to connect as root instead. More info: https://aka.ms/vscode-remote/containers/non-root.
+	"remoteUser": "vscode",
+}
